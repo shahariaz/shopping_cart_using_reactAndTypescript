@@ -1,4 +1,4 @@
-import { useContext, createContext, ReactNode } from "react";
+import { useContext, createContext, ReactNode, useState } from "react";
 
 //type
 type ShoppingCartItem = {
@@ -10,7 +10,10 @@ type ShoppingCartContxt = {
   decreaseItemQuantity: (id: number) => void;
   removeItem: (id: number) => void;
 };
-
+type CartItem = {
+  id: number;
+  quantity: number;
+};
 //create context
 const ShoppingCartContext = createContext({} as ShoppingCartContxt);
 export function useShoppingCart() {
@@ -18,6 +21,10 @@ export function useShoppingCart() {
 }
 
 export function ShoppingCartProvider({ children }: ShoppingCartItem) {
+  const [cartItems, setCartItems] = useState<CartItem[]>({});
+  function getItemQuantity(id: number) {
+    return cartItems.find((item) => item.id === id)?.quantity || 0;
+  }
   return (
     <ShoppingCartContext.Provider value={{}}>
       {children}
